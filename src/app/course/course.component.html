@@ -1,0 +1,33 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">Курсы</h1>
+
+	<div *ngIf="role === 'METHOD'" class="row mt-4 d-flex justify-content-center">
+		<div class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course_add'" appNavigate class="btn btn-success">Добавить</a>
+		</div>
+	</div>
+
+</div>
+
+<div class="container">
+
+	<div class="row">
+		@for (i of courses; track i.id) {
+			<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+				<a appNavigate [navigateURL]="'course'" [queryParams]="{id:i.id}" role="button">
+					<div class="card card-body shadow h-100">
+						<p class="fs-4 mb-2 text-center">{{ i.name }}</p>
+						<p class="fs-5 m-0">
+							<span>Статус: </span>
+							<span class="text-success" *ngIf="i.status">Активен</span>
+							<span class="text-danger" *ngIf="!i.status">Отключен</span>
+						</p>
+						<p class="fs-5 m-0">{{ 'Отдел: ' + i.departmentName }}</p>
+					</div>
+				</a>
+			</div>
+		}
+	</div>
+
+</div>

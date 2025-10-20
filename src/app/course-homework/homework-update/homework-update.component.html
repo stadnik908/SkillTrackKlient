@@ -1,0 +1,40 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">Обновить урок</h1>
+
+	<div class="row mt-4 d-flex justify-content-center">
+		<div class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course_homework'" [queryParams]="{id:id}" appNavigate class="btn btn-secondary">Назад</a>
+		</div>
+	</div>
+
+</div>
+
+<div class="container">
+
+	<div class="card card-body shadow" data-aos="zoom-in">
+		<form (ngSubmit)="update()" [formGroup]="homeworkFormGroup" class="row">
+			<div class="col-12 col-lg-6 mb-2">
+				<p class="fs-4 m-0">Наименование</p>
+				<input class="form-control" formControlName="name" maxlength="255" minlength="1" type="text">
+			</div>
+			<div class="col-12 col-lg-6 mb-2">
+				<p class="fs-4 m-0">Дедлайн</p>
+				<input class="form-control" formControlName="deadline" type="date">
+			</div>
+			<div class="col-12 mb-2">
+				<p class="fs-4 m-0">Домашнее задание</p>
+				<input (change)="changeFile($event)" accept="*/*" class="form-control" type="file">
+			</div>
+			<div class="col-12 mb-2">
+				<p class="fs-4 m-0">Описание</p>
+				<textarea class="form-control" formControlName="description" maxlength="5000" minlength="1"></textarea>
+			</div>
+			<div class="col-12">
+				<button [disabled]="!checkSubmit()" class="btn btn-success w-100" type="submit">Обновить</button>
+			</div>
+		</form>
+	</div>
+
+</div>
+

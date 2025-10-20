@@ -1,0 +1,9 @@
+<div class="card card-body h-100">
+	<p class="fs-4 mb-2 text-center">{{ competence.name || competence.competenceName }}</p>
+	<p class="fs-4 mb-2 text-center">{{ 'Оценка: '  + score }}</p>
+	<input *ngIf="role === 'ADMIN' || role === 'LEAD'" class="form-control mb-2" [(ngModel)]="score" max="3" step="1"
+		   min="1" placeholder="Оценка" type="number">
+	<button *ngIf="role === 'ADMIN' || role === 'LEAD'" [disabled]="score === null || !(score >= 1 && score <= 3)"
+			class="btn btn-success w-100 mt-auto" type="button" (click)="update()">Обновить
+	</button>
+</div>

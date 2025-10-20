@@ -1,0 +1,29 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">Сотрудники</h1>
+
+</div>
+
+<div class="container">
+
+	<div class="row">
+		@for (i of employeesSorted; track i.id) {
+			<div class="col-12 col-lg-3 mb-4" data-aos="zoom-in">
+				<a appNavigate [navigateURL]="'employee'" [queryParams]="{id:i.id}" role="button">
+					<div class="card card-body shadow h-100">
+						<img [src]="i.img" alt="img" class="object-fit-cover w-100 rounded shadow mb-2" height="300">
+						<p class="fs-4 mb-2 text-center">{{ i.fio }}</p>
+						<p class="fs-5 m-0">{{ i.roleName }}</p>
+						<p class="fs-5 m-0">
+							<span>Статус: </span>
+							<span class="text-success" *ngIf="i.lock">Активен</span>
+							<span class="text-danger" *ngIf="!i.lock">Заблокирован</span>
+						</p>
+						<p *ngIf="i.departmentName !== ''" class="fs-5 m-0">{{ 'Должность: ' + i.departmentName }}</p>
+					</div>
+				</a>
+			</div>
+		}
+	</div>
+
+</div>

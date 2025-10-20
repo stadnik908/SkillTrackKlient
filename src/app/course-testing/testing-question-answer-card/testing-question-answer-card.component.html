@@ -1,0 +1,14 @@
+<form (ngSubmit)="update()" [formGroup]="answerFormGroup" class="row">
+	<div class="col-12 col-lg my-1">
+		<input class="form-control" formControlName="name" maxlength="255" minlength="1" placeholder="Ответ"
+			   type="text">
+	</div>
+	<div class="col-12 col-lg my-1">
+		<input class="form-control" formControlName="score" max="10" min="1" placeholder="Балл" step="1"
+			   type="number">
+	</div>
+	<div class="col-12 col-lg-auto my-1">
+		<button [disabled]="answerFormGroup.invalid" class="btn btn-success w-100" type="submit">Обновить
+		</button>
+	</div>
+</form>

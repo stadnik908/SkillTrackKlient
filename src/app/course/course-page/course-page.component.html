@@ -1,0 +1,102 @@
+<div class="container-fluid my-5">
+
+	<h1 class="text-center" data-aos="zoom-in">{{ course.name }}</h1>
+
+	<div class="row mt-4 d-flex justify-content-center">
+		<div class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'courses'" appNavigate class="btn btn-secondary">Назад</a>
+		</div>
+		<div class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course_feedbacks'" [queryParams]="{id:course.id}" appNavigate
+			   class="btn btn-secondary">Отзывы</a>
+		</div>
+		<div class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course_chats'" [queryParams]="{id:course.id}" appNavigate
+			   class="btn btn-secondary">Чат</a>
+		</div>
+		<div *ngIf="role === 'METHOD' && !course.status" class="col-auto" data-aos="zoom-in">
+			<a (click)="updateStatus()" class="btn btn-success">Активировать</a>
+		</div>
+		<div *ngIf="role === 'METHOD' && course.status" class="col-auto" data-aos="zoom-in">
+			<a (click)="updateStatus()" class="btn btn-danger">Отключить</a>
+		</div>
+		<div *ngIf="role === 'METHOD' && !course.status" class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course_update'" [queryParams]="{id:course.id}" appNavigate class="btn btn-success">Обновить</a>
+		</div>
+		<div *ngIf="role === 'METHOD' && !course.status" class="col-auto" data-aos="zoom-in">
+			<a (click)="delete()" class="btn btn-danger">Удалить</a>
+		</div>
+	</div>
+
+	<div *ngIf="role === 'METHOD' && !course.status" class="row mt-4 d-flex justify-content-center">
+		<div class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course_lesson_add'" [queryParams]="{courseId:course.id}" appNavigate
+			   class="btn btn-success">Добавить урок</a>
+		</div>
+		<div class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course_homework_add'" [queryParams]="{courseId:course.id}" appNavigate
+			   class="btn btn-success">Добавить домашнее задание</a>
+		</div>
+		<div class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course_testing_add'" [queryParams]="{courseId:course.id}" appNavigate
+			   class="btn btn-success">Добавить тест</a>
+		</div>
+	</div>
+
+</div>
+
+<div *ngIf="(role === 'METHOD' || role === 'EMPLOYEE') && lessons.length > 0" class="container my-5">
+
+	<h2 class="text-center" data-aos="zoom-in">Уроки</h2>
+
+	<div class="row">
+		@for (i of lessons; track i.id) {
+			<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+				<a appNavigate [navigateURL]="'course_lesson'" [queryParams]="{id:i.id}" role="button">
+					<div class="card card-body shadow">
+						<p class="fs-4 mb-2 text-center">{{ i.name }}</p>
+						<p class="fs-5 m-0">{{ 'Тематика: ' + i.theme }}</p>
+					</div>
+				</a>
+			</div>
+		}
+	</div>
+
+</div>
+
+<div *ngIf="homeworks.length > 0" class="container my-5">
+
+	<h2 class="text-center" data-aos="zoom-in">Домашние задания</h2>
+
+	<div class="row">
+		@for (i of homeworks; track i.id) {
+			<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+				<a appNavigate [navigateURL]="'course_homework'" [queryParams]="{id:i.id}" role="button">
+					<div class="card card-body shadow">
+						<p class="fs-4 mb-2 text-center">{{ i.name }}</p>
+						<p class="fs-5 m-0">{{ 'Дедлайн: ' + i.deadline }}</p>
+					</div>
+				</a>
+			</div>
+		}
+	</div>
+
+</div>
+
+<div *ngIf="(role === 'METHOD' || role === 'EMPLOYEE') && testings.length > 0" class="container my-5">
+
+	<h2 class="text-center" data-aos="zoom-in">Тесты</h2>
+
+	<div class="row">
+		@for (i of testings; track i.id) {
+			<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+				<a appNavigate [navigateURL]="'course_testing'" [queryParams]="{id:i.id}" role="button">
+					<div class="card card-body shadow">
+						<p class="fs-4 m-0 text-center">{{ i.name }}</p>
+					</div>
+				</a>
+			</div>
+		}
+	</div>
+
+</div>

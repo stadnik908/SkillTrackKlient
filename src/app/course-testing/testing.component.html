@@ -1,0 +1,92 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">{{ testing.name }}</h1>
+
+	<div class="row mt-4 d-flex justify-content-center">
+		<div class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course'" [queryParams]="{id:testing.courseId}" appNavigate
+			   class="btn btn-secondary">Назад</a>
+		</div>
+		<div *ngIf="role === 'METHOD' && !testing.status" class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course_testing_update'" [queryParams]="{id:testing.id}" appNavigate
+			   class="btn btn-success">Обновить</a>
+		</div>
+		<div *ngIf="role === 'METHOD' && !testing.status" class="col-auto" data-aos="zoom-in">
+			<a (click)="delete()" class="btn btn-danger">Удалить</a>
+		</div>
+	</div>
+
+</div>
+
+<div class="container">
+
+	<div class="row fs-5">
+		@for (i of checks; track i.id) {
+			<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+				<div class="card card-body shadow h-100">
+					<p class="mb-2 text-center">{{ i.employeeFio }}</p>
+					<p class="m-0">{{ 'Набрано баллов: ' + i.score }}</p>
+				</div>
+			</div>
+		}
+	</div>
+
+</div>
+
+<div *ngIf="role === 'EMPLOYEE' && testingCheck" class="container">
+
+	@for (q of questions; track q.id) {
+		<div class="card card-body shadow mb-2 fs-4" data-aos="zoom-in">
+			<p class="mb-2">{{ q.name }}</p>
+			<select (change)="changeScore($event)" class="form-select">
+				<option disabled selected>Выберите ответ</option>
+				@for (a of q.answers; track a.id) {
+					<option [value]="q.id + '|' + a.score" [label]="a.name + ' - ' + a.score"></option>
+				}
+			</select>
+		</div>
+	}
+
+	<div data-aos="zoom-in">
+		<button (click)="checkSave()" [disabled]="score.size !== questions.length" class="btn btn-success w-100"
+				type="button">Отправить результаты
+		</button>
+	</div>
+
+</div>
+
+<div *ngIf="role === 'METHOD' && !testing.status" class="container">
+
+	<div class="card card-body p-3 mb-4 shadow" data-aos="zoom-in">
+		<form (ngSubmit)="questionSave()" [formGroup]="questionFormGroup" class="row">
+			<div class="col-12 col-lg my-1">
+				<input class="form-control mb-2" formControlName="name" maxlength="255" minlength="1" placeholder="Вопрос"
+					   type="text">
+			</div>
+			<div class="col-12 col-lg-auto my-1">
+				<button [disabled]="questionFormGroup.invalid" class="btn btn-success w-100" type="submit">Добавить
+				</button>
+			</div>
+		</form>
+	</div>
+
+	@for (i of questions; track i.id) {
+		<div class="card card-body p-3 mb-4 shadow" data-aos="zoom-in">
+			<app-testing-question-card [question]="i"></app-testing-question-card>
+		</div>
+	}
+
+</div>
+
+<div *ngIf="role === 'METHOD' && testing.status" class="container">
+
+	@for (q of questions; track q.id) {
+		<div class="card card-body shadow mb-4" data-aos="zoom-in">
+			<p class="fs-4 mb-2">{{ q.name }}</p>
+			@for (a of q.answers; track a.id) {
+				<p class="fs-5 m-0">{{ a.name + ' | ' + a.score }}</p>
+			}
+		</div>
+	}
+
+</div>

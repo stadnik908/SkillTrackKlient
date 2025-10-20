@@ -1,0 +1,75 @@
+<div class="card card-body shadow h-100">
+	<p class="mb-2 text-center">{{ plan.userFio }}</p>
+
+	<p class="m-0">
+		<span>Статус: </span>
+		<span class="text-success" *ngIf="plan.status">Выполнен</span>
+		<span class="text-danger" *ngIf="!plan.status">Не выполнен</span>
+	</p>
+
+	<p class="m-0">{{ 'Категория: ' + plan.categoryName }}</p>
+
+	<div *ngIf="category === 'COURSE'">
+		<p class="m-0">{{ 'Курс: ' + plan.courseName }}</p>
+		<p class="m-0">{{ 'Необходимый процент: ' + plan.percent + '%' }}</p>
+		<p class="m-0">{{ 'Текущий процент: ' + plan.percentCurrent + '%' }}</p>
+	</div>
+
+	<div *ngIf="category === 'CHOICE' || category === 'SCORE'">
+		<p class="m-0">{{ 'Текст: ' + plan.text }}</p>
+	</div>
+
+	<div *ngIf="category === 'SCORE'">
+		<p class="m-0">{{ 'Минимальная оценка: ' + plan.scoreMin }}</p>
+		<p class="m-0">{{ 'Оценка: ' + plan.score }}</p>
+	</div>
+
+	<div class="mt-auto"></div>
+
+	<div *ngIf="role === 'HR' || role === 'LEAD'">
+
+		<div *ngIf="category === 'COURSE'">
+			<select (change)="changeCourseId($event)" class="form-select mt-2">
+				@for (i of coursesSorted; track i.id) {
+					<option [value]="i.id" [label]="i.name" [selected]="i.id == plan.courseId"></option>
+				}
+			</select>
+			<input type="number" [(ngModel)]="plan.percent" class="form-control mt-2" min="1" step="1" max="100"
+				   placeholder="Необходимый процент">
+			<button type="button" class="btn btn-success w-100 mt-2" (click)="putCourse()"
+					[disabled]="checkPutCourse()">Обновить
+			</button>
+		</div>
+
+		<div *ngIf="category === 'CHOICE' || category === 'SCORE'">
+			<input type="text" [(ngModel)]="plan.text" class="form-control mt-2" minlength="1" maxlength="255"
+				   placeholder="Текст">
+		</div>
+
+		<div *ngIf="category === 'CHOICE'">
+			<button type="button" class="btn btn-success w-100 mt-2" (click)="putChoice()"
+					[disabled]="checkPutChoice()">Обновить
+			</button>
+			<button *ngIf="!plan.status" type="button" class="btn btn-success w-100 mt-2" (click)="patchChoice()">Выполнено</button>
+			<button *ngIf="plan.status" type="button" class="btn btn-warning w-100 mt-2" (click)="patchChoice()">Не выполнено</button>
+		</div>
+
+		<div *ngIf="category === 'SCORE'">
+			<input type="number" [(ngModel)]="plan.scoreMin" class="form-control mt-2" min="1" step="1" max="10"
+				   placeholder="Необходимая оценка">
+			<button type="button" class="btn btn-success w-100 mt-2" (click)="putScore()"
+					[disabled]="checkPutScore()">Обновить
+			</button>
+			<input type="number" [(ngModel)]="plan.score" class="form-control mt-2" min="1" step="1" max="10"
+				   placeholder="Оценка">
+			<button type="button" class="btn btn-success w-100 mt-2" (click)="patchScore()"
+					[disabled]="checkPatchScore()">Обновить оценку
+			</button>
+		</div>
+
+		<button type="button" class="btn btn-danger w-100 mt-2" (click)="delete()">Удалить</button>
+
+	</div>
+
+
+</div>

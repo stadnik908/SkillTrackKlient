@@ -1,0 +1,103 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in" style="color: #256038;">Индивидуальные планы развития</h1>
+
+</div>
+
+<div class="container">
+
+	<div *ngIf="role === 'HR'" class="card card-body shadow mb-4" data-aos="zoom-in">
+		<select (change)="changeDepartmentId($event)" class="form-select">
+			<option disabled selected>Выберите отдел</option>
+			@for (i of departments; track i.id) {
+				<option [value]="i.id" [label]="i.name"></option>
+			}
+		</select>
+	</div>
+
+	<div *ngIf="(role === 'HR' || role === 'LEAD') && departmentId != 0" class="card card-body shadow mb-4"
+		 data-aos="zoom-in">
+		<select (change)="changeUserId($event)" class="form-select">
+			<option disabled selected>Выберите сотрудника</option>
+			@for (i of employeesSorted; track i.id) {
+				<option [value]="i.id" [label]="i.fio"></option>
+			}
+		</select>
+	</div>
+
+	<div *ngIf="(role === 'HR' || role === 'LEAD') && userId != 0" class="card card-body shadow mb-4"
+		 data-aos="zoom-in">
+		<div class="row">
+			<div class="col-12 col-lg-auto my-2">
+				<select [(ngModel)]="save" class="form-select">
+					<option value="0" disabled>Выберите</option>
+					<option value="1">Курс</option>
+					<option value="2">Текст + Да/Нет</option>
+					<option value="3">Текст + оценка</option>
+				</select>
+			</div>
+
+			<!-- course -->
+
+			<div *ngIf="save == 1" class="col-12 col-lg my-2" data-aos="zoom-in">
+				<select (change)="changeCourseId($event)" class="form-select">
+					<option value="0" selected disabled>Выберите курс</option>
+					@for (i of coursesSorted; track i.id) {
+						<option [value]="i.id" [label]="i.name"></option>
+					}
+				</select>
+			</div>
+			<div *ngIf="save == 1" class="col-12 col-lg my-2" data-aos="zoom-in">
+				<input type="number" [(ngModel)]="percent" class="form-control" min="1" step="1" max="100"
+					   placeholder="Необходимый процент">
+			</div>
+			<div *ngIf="save == 1" class="col-12 col-lg-auto my-2" data-aos="zoom-in">
+				<button type="button" class="btn btn-success w-100" (click)="postCourse()"
+						[disabled]="checkPostCourse()">Добавить
+				</button>
+			</div>
+
+			<!-- choice -->
+
+			<div *ngIf="save == 2" class="col-12 col-lg my-2" data-aos="zoom-in">
+				<input type="text" [(ngModel)]="text" class="form-control" minlength="1" maxlength="255"
+					   placeholder="Текст">
+			</div>
+			<div *ngIf="save == 2" class="col-12 col-lg-auto my-2" data-aos="zoom-in">
+				<button type="button" class="btn btn-success w-100" (click)="postChoice()"
+						[disabled]="checkPostChoice()">Добавить
+				</button>
+			</div>
+
+			<!-- score -->
+
+			<div *ngIf="save == 3" class="col-12 col-lg my-2" data-aos="zoom-in">
+				<input type="text" [(ngModel)]="text" class="form-control" minlength="1" maxlength="255"
+					   placeholder="Текст">
+			</div>
+			<div *ngIf="save == 3" class="col-12 col-lg my-2" data-aos="zoom-in">
+				<input type="number" [(ngModel)]="scoreMin" class="form-control" min="1" step="1" max="10"
+					   placeholder="Необходимая оценка">
+			</div>
+			<div *ngIf="save == 3" class="col-12 col-lg-auto my-2" data-aos="zoom-in">
+				<button type="button" class="btn btn-success w-100" (click)="postScore()"
+						[disabled]="checkPostScore()">Добавить
+				</button>
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+<div class="container">
+
+	<div class="row fs-5">
+		@for (i of plans; track i.id) {
+			<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+				<app-plan-card [plan]="i" [departmentId]="departmentId"></app-plan-card>
+			</div>
+		}
+	</div>
+
+</div>

@@ -1,0 +1,13 @@
+<p class="mb-2 text-center">{{ check.employeeFio }}</p>
+<p *ngIf="check.score !== 0" class="m-0">{{ 'Оценка: ' + check.score }}</p>
+
+<div class="mt-auto"></div>
+
+<a [href]="check.file" class="btn btn-info w-100 mt-2" target="_blank">Файл</a>
+
+<div *ngIf="(role === 'METHOD' || role === 'LEAD') && check.score === 0">
+	<input [(ngModel)]="score" class="form-control mt-2" max="10" min="1" placeholder="Оценка" step="1" type="number">
+	<button (click)="updateScore()" [disabled]="score === null" class="btn btn-success w-100 mt-2" type="button">
+		Поставить оценку
+	</button>
+</div>

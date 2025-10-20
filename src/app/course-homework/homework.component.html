@@ -1,0 +1,45 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">{{ homework.name }}</h1>
+
+	<div class="row mt-4 d-flex justify-content-center">
+		<div class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course'" [queryParams]="{id:homework.courseId}" appNavigate
+			   class="btn btn-secondary">Назад</a>
+		</div>
+		<div class="col-auto" data-aos="zoom-in">
+			<a [href]="homework.file" class="btn btn-info" target="_blank">Домашнее задание</a>
+		</div>
+		<div *ngIf="role === 'METHOD' && !homework.status" class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course_homework_update'" [queryParams]="{id:homework.id}" appNavigate
+			   class="btn btn-success">Обновить</a>
+		</div>
+		<div *ngIf="role === 'METHOD' && !homework.status" class="col-auto" data-aos="zoom-in">
+			<a (click)="delete()" class="btn btn-danger">Удалить</a>
+		</div>
+	</div>
+
+</div>
+
+<div class="container">
+
+	<div class="card card-body shadow mb-4" data-aos="zoom-in">
+		<p class="fs-4 mb-0">{{ 'Дедлайн: ' + homework.deadline }}</p>
+		<p class="fs-4 mb-0">{{ homework.description }}</p>
+		<div *ngIf="role === 'EMPLOYEE' && homeworkCheck" class="mt-2">
+			<p class="fs-4 text-center mb-2">Добавить ответ</p>
+			<input (change)="checkSave($event)" accept="image/*" class="form-control" type="file">
+		</div>
+	</div>
+
+	<div class="row fs-5">
+		@for (i of checks; track i.id) {
+			<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+				<div class="card card-body shadow h-100">
+					<app-homework-check-card [check]="i"></app-homework-check-card>
+				</div>
+			</div>
+		}
+	</div>
+
+</div>

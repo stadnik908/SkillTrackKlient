@@ -1,0 +1,47 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">{{ lesson.name }}</h1>
+
+	<div class="row mt-4 d-flex justify-content-center">
+		<div class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course'" [queryParams]="{id:lesson.courseId}" appNavigate
+			   class="btn btn-secondary">Назад</a>
+		</div>
+		<div class="col-auto" data-aos="zoom-in">
+			<a [href]="lesson.video" class="btn btn-info" target="_blank">Видео</a>
+		</div>
+		<div class="col-auto" data-aos="zoom-in">
+			<a [href]="lesson.file" class="btn btn-info" target="_blank">Презентация</a>
+		</div>
+		<div *ngIf="role === 'EMPLOYEE' && lessonCheck" class="col-auto" data-aos="zoom-in">
+			<a (click)="checkSave()" class="btn btn-success">Пройдено</a>
+		</div>
+		<div *ngIf="role === 'METHOD' && !lesson.status" class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course_lesson_update'" [queryParams]="{id:lesson.id}" appNavigate
+			   class="btn btn-success">Обновить</a>
+		</div>
+		<div *ngIf="role === 'METHOD' && !lesson.status" class="col-auto" data-aos="zoom-in">
+			<a (click)="delete()" class="btn btn-danger">Удалить</a>
+		</div>
+	</div>
+
+</div>
+
+<div class="container">
+
+	<div class="card card-body shadow fs-5" data-aos="zoom-in">
+		<div class="row text-center">
+			<div class="col-12 col-lg">
+				<p class="m-0">{{ 'Тематика: ' + lesson.theme }}</p>
+			</div>
+			<div class="col-12 col-lg">
+				<p class="m-0">{{ 'Дата создания: ' + lesson.dateCreate }}</p>
+			</div>
+			<div class="col-12 col-lg">
+				<p class="m-0">{{ 'Дата обновления: ' + lesson.dateUpdate }}</p>
+			</div>
+		</div>
+		<p class="m-0">{{ lesson.description }}</p>
+	</div>
+
+</div>

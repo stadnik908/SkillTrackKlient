@@ -1,0 +1,24 @@
+<div class="row fs-6 g-0" data-aos="zoom-in">
+	<div class="col p-2 border border-dark bg-white text-center">{{ employee.roleName }}</div>
+	<div class="col p-2 border border-dark bg-white text-center">{{ employee.fio }}</div>
+	<div class="col p-2 border border-dark bg-white text-center">{{ employee.grade }}</div>
+
+	@for (i of competences; track i.id) {
+		<div *ngIf="competence(i.id) == 0" class="col-1 p-2 border border-dark text-center bg-white text-muted">
+			{{ competence(i.id) }}
+		</div>
+		<div *ngIf="competence(i.id) == 1" class="col-1 p-2 border border-dark text-center bg-danger text-white">
+			{{ competence(i.id) }}
+		</div>
+		<div *ngIf="competence(i.id) == 2" class="col-1 p-2 border border-dark text-center bg-warning text-dark">
+			{{ competence(i.id) }}
+		</div>
+		<div *ngIf="competence(i.id) == 3" class="col-1 p-2 border border-dark text-center bg-success text-white">
+			{{ competence(i.id) }}
+		</div>
+	}
+
+	<div class="col-1 p-2 border border-dark text-center bg-white fw-semibold">
+		{{ (level() | number:'1.2-2') + '%' }}
+	</div>
+</div>

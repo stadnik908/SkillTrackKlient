@@ -1,0 +1,66 @@
+<div class="container-fluid my-5">
+
+	<h1 class="text-center" data-aos="zoom-in">Аккаунт</h1>
+
+</div>
+
+<div class="container my-5">
+
+	<div class="row">
+		<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+			<img [src]="user.img" alt="img" class="object-fit-cover w-100 rounded shadow" height="400">
+		</div>
+		<div class="col-12 col-lg mb-4" data-aos="zoom-in">
+			<div class="card card-body shadow h-100 d-flex justify-content-center">
+				<div>
+					<p class="fs-4 m-0">{{ user.roleName }}</p>
+					<p *ngIf="user.departmentName !== ''"
+					   class="fs-4 m-0">{{ 'Отдел: ' + user.departmentName }}</p>
+					<p class="fs-4 m-0">{{ 'ФИО: ' + user.fio }}</p>
+					<p class="fs-4 m-0">{{ 'Почта: ' + user.email }}</p>
+					<p class="fs-4 m-0">{{ 'Телефон: ' + user.tel }}</p>
+					<p class="fs-4 m-0">{{ 'Грейд: ' + user.grade }}</p>
+					<p class="fs-4 m-0">{{ 'Ранг: ' + user.rang }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div *ngIf="user.testingChecks.length > 0" class="container my-5">
+
+	<h2 class="text-center mb-4" data-aos="zoom-in">Тестирование</h2>
+
+	<div class="row fs-5">
+		@for (i of user.testingChecks; track i.id) {
+			<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+				<div class="card card-body shadow h-100">
+					<p class="mb-2 text-center">{{ i.courseName }}</p>
+					<p class="m-0">{{ 'Набрано баллов: ' + i.score }}</p>
+				</div>
+			</div>
+		}
+	</div>
+
+</div>
+
+
+<div *ngIf="user.upgrades.length > 0" class="container my-5">
+
+	<h2 class="text-center mb-4" data-aos="zoom-in">Обучение</h2>
+
+	<div class="row fs-5">
+		@for (i of user.upgrades; track i.id) {
+			<div class="col-12 col-lg-4 mb-4" data-aos="zoom-in">
+				<div class="card card-body shadow">
+					<p class="fs-4 mb-2 text-center">{{ i.courseName }}</p>
+					<p class="m-0">{{ 'Статус: ' + i.statusName }}</p>
+					<p class="m-0">{{ 'Модулей пройдено: ' + i.current }}</p>
+					<p class="m-0">{{ 'Модулей всего: ' + i.max }}</p>
+				</div>
+			</div>
+		}
+	</div>
+
+</div>

@@ -1,0 +1,28 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">Отзывы</h1>
+
+	<div class="row mt-4 d-flex justify-content-center">
+		<div class="col-auto" data-aos="zoom-in">
+			<a [navigateURL]="'course'" [queryParams]="{id:id}" appNavigate class="btn btn-secondary">Назад</a>
+		</div>
+	</div>
+
+</div>
+
+<div class="container">
+
+	<div *ngIf="role === 'EMPLOYEE'" class="card card-body shadow mb-4" data-aos="zoom-in">
+		<textarea [(ngModel)]="text" class="form-control mb-2" maxlength="5000" minlength="1"
+				  placeholder="Напишите текст"></textarea>
+		<button (click)="save()" [disabled]="text === ''" class="btn btn-success w-100" type="button">Добавить</button>
+	</div>
+
+	@for (i of feedbacks; track i.id) {
+		<div class="card card-body shadow mb-2 fs-5" data-aos="zoom-in">
+			<p class="m-0">{{ i.date + ' | ' + i.fio }}</p>
+			<p class="m-0">{{ i.text }}</p>
+		</div>
+	}
+
+</div>

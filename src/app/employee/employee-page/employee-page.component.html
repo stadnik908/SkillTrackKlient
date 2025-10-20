@@ -1,0 +1,191 @@
+<div class="container" id="pdf">
+
+	<div class="my-5">
+
+		<h1 class="text-center">{{ employee.fio }}</h1>
+
+		<div class="row mt-4 d-flex justify-content-center">
+			<div class="col-auto">
+				<a [navigateURL]="'employees'" appNavigate class="btn btn-secondary" role="button">Назад</a>
+			</div>
+			<div class="col-auto">
+				<a (click)="generatePDF()" class="btn btn-success" role="button">PDF</a>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="container my-5">
+
+		<div class="row">
+			<div class="col-12 col-lg-4 mb-4">
+				<input (change)="updateImg($event)" *ngIf="role === 'HR'" accept="image/*" class="form-control mb-2"
+					   type="file">
+				<div class="ratio ratio-1x1">
+					<img [src]="employee.img" alt="img" class="object-fit-cover rounded">
+				</div>
+			</div>
+			<div class="col-12 col-lg mb-4">
+				<div class="card card-body h-100 d-flex justify-content-center">
+					<div *ngIf="role !== 'HR'">
+						<p class="fs-4 m-0">{{ employee.roleName }}</p>
+						<p *ngIf="employee.departmentName !== ''"
+						   class="fs-4 m-0">{{ 'Отдел: ' + employee.departmentName }}</p>
+						<p class="fs-4 m-0">
+							<span>Статус: </span>
+							<span *ngIf="employee.lock" class="text-success">Активен</span>
+							<span *ngIf="!employee.lock" class="text-danger">Заблокирован</span>
+						</p>
+						<p class="fs-4 m-0">{{ 'Почта: ' + employee.email }}</p>
+						<p class="fs-4 m-0">{{ 'Телефон: ' + employee.tel }}</p>
+						<p class="fs-4 m-0">{{ 'Грейд: ' + employee.grade }}</p>
+						<p class="fs-4 m-0">{{ 'Ранг: ' + employee.rang }}</p>
+					</div>
+					<div *ngIf="role === 'HR'">
+						<button (click)="updateLock()" *ngIf="employee.lock" class="btn btn-danger w-100"
+								type="button">Заблокировать
+						</button>
+						<button (click)="updateLock()" *ngIf="!employee.lock" class="btn btn-success w-100"
+								type="button">Разблокировать
+						</button>
+
+						<hr>
+
+						<p class="fs-4 m-0">{{ employee.roleName }}</p>
+
+						<hr>
+
+						<select (change)="updateDepartment($event)" class="form-select">
+							<option *ngIf="employee.departmentId === 0" disabled selected>Выберите отдел</option>
+							@for (d of departments; track d.id) {
+								<option [value]="d.id" [label]="d.name"
+										[selected]="d.id === employee.departmentId"></option>
+							}
+						</select>
+
+						<hr>
+
+						<input [(ngModel)]="employee.fio" class="form-control mb-2" maxlength="255" minlength="1"
+							   placeholder="ФИО" type="text">
+						<input [(ngModel)]="employee.email" class="form-control mb-2" maxlength="255" minlength="1"
+							   placeholder="Почта" type="email">
+						<input [(ngModel)]="employee.tel" class="form-control mb-2" maxlength="255" minlength="1"
+							   placeholder="Телефон" type="text">
+						<input [(ngModel)]="employee.grade" class="form-control mb-2" maxlength="255" minlength="1"
+							   placeholder="Грейд" type="text">
+						<input [(ngModel)]="employee.rang" class="form-control mb-2" max="10" min="1" placeholder="Ранг"
+							   step="1" type="number">
+
+						<button (click)="updateProfile()" [disabled]="!checkUpdateProfile()"
+								class="btn btn-success w-100"
+								type="button">Обновить
+						</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div *ngIf="competences.length > 0" class="container my-5">
+
+		<h2 class="text-center mb-4">Компетенции</h2>
+
+		<div class="row">
+			@for (i of competences; track i.id) {
+				<div class="col-12 col-lg-4 mb-4">
+					<app-employee-competence-card [userId]="employee.id"
+												  [competence]="i"></app-employee-competence-card>
+				</div>
+			}
+		</div>
+
+	</div>
+
+	<div *ngIf="certificates.length > 0 || (role === 'METHOD' && coursesForCertificate.length > 0)"
+		 class="container my-5">
+
+		<h2 class="text-center mb-4">Сертификаты</h2>
+
+		<div *ngIf="role === 'METHOD' && coursesForCertificate.length > 0">
+			<div class="card card-body mb-4 fs-4">
+				<div class="row">
+					<div class="col-12 col-lg-4 mb-2">
+						<p class="m-0">Курс</p>
+						<select [(ngModel)]="courseId" class="form-select">
+							<option disabled value="0">Выберите курс</option>
+							@for (i of coursesForCertificate; track i.id) {
+								<option [value]="i.courseId" [label]="i.courseName"></option>
+							}
+						</select>
+					</div>
+					<div class="col-12 col-lg-4 mb-2">
+						<p class="m-0">Оценка</p>
+						<input [(ngModel)]="score" class="form-control" max="10" min="1" step="1" type="number">
+					</div>
+					<div class="col-12 col-lg-4 mb-2">
+						<p class="m-0">Сертификат</p>
+						<input (change)="changeFile($event)" accept="*/*" class="form-control" type="file">
+					</div>
+					<div class="col-12">
+						<button (click)="saveCertificate()" [disabled]="!checkSaveCertificate()"
+								class="btn btn-success w-100"
+								type="button">Добавить сертификат
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row fs-5">
+			@for (i of certificates; track i.id) {
+				<div class="col-12 col-lg-4 mb-4">
+					<div class="card card-body h-100">
+						<p class="mb-2 text-center">{{ i.courseName }}</p>
+						<p class="m-0">{{ 'Итоговая оценка: ' + i.score }}</p>
+						<a [href]="i.file" target="_blank" class="btn btn-info w-100 mt-2">Сертификат</a>
+					</div>
+				</div>
+			}
+		</div>
+
+	</div>
+
+	<div *ngIf="testingChecks.length > 0" class="container my-5">
+
+		<h2 class="text-center mb-4">Тестирование</h2>
+
+		<div class="row fs-5">
+			@for (i of testingChecks; track i.id) {
+				<div class="col-12 col-lg-4 mb-4">
+					<div class="card card-body h-100">
+						<p class="mb-2 text-center">{{ i.courseName }}</p>
+						<p class="m-0">{{ 'Набрано баллов: ' + i.score }}</p>
+					</div>
+				</div>
+			}
+		</div>
+
+	</div>
+
+	<div *ngIf="upgrades.length > 0" class="container my-5">
+
+		<h2 class="text-center mb-4">Обучение</h2>
+
+		<div class="row fs-5">
+			@for (i of upgrades; track i.id) {
+				<div class="col-12 col-lg-4 mb-4">
+					<div class="card card-body">
+						<p class="fs-4 mb-2 text-center">{{ i.courseName }}</p>
+						<p class="m-0">{{ 'Статус: ' + i.statusName }}</p>
+						<p class="m-0">{{ 'Модулей пройдено: ' + i.current }}</p>
+						<p class="m-0">{{ 'Модулей всего: ' + i.max }}</p>
+					</div>
+				</div>
+			}
+		</div>
+
+	</div>
+
+</div>

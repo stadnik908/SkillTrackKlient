@@ -1,0 +1,35 @@
+<div class="container-fluid py-5">
+
+	<h1 class="text-center" data-aos="zoom-in">Компетенции</h1>
+
+</div>
+
+<div class="container">
+
+	<div *ngIf="role === 'ADMIN'" class="card card-body shadow mb-4" data-aos="zoom-in">
+		<select (change)="changeDepartmentId($event)" class="form-select">
+			<option disabled selected>Выберите отдел</option>
+			@for (i of departments; track i.id) {
+				<option [value]="i.id" [label]="i.name"></option>
+			}
+		</select>
+	</div>
+
+	<div *ngIf="departmentId != 0" class="card card-body shadow mb-4" data-aos="zoom-in">
+		<form (ngSubmit)="save()" [formGroup]="competenceFormGroup">
+			<input class="form-control mb-2" formControlName="name" maxlength="255" minlength="1"
+				   placeholder="Наименование" type="text">
+			<button [disabled]="competenceFormGroup.invalid" class="btn btn-success w-100" type="submit">Добавить
+			</button>
+		</form>
+	</div>
+
+	<div class="row">
+		@for (i of competences; track i.id) {
+			<div class="col-12 col-lg-6 mb-4" data-aos="zoom-in">
+				<app-department-competence-card [competence]="i"></app-department-competence-card>
+			</div>
+		}
+	</div>
+
+</div>
